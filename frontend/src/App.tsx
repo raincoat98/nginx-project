@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [message, setMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleClick = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("http://localhost:5000/api/hello", {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log("서버 응답:", data);
+      setMessage(data.message);
+    } catch (error) {
+      console.error("에러 발생:", error);
+      setMessage("에러가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="App">
+      <header className="App-header">
+        <h1>Nginx 프로젝트</h1>
+        <button
+          onClick={handleClick}
+          className="action-button"
+          disabled={isLoading}
+        >
+          {isLoading ? "로딩 중..." : "백엔드 호출하기"}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+        {message && <p className="message">{message}</p>}
+      </header>
+    </div>
+  );
 }
 
-export default App
+export default App;
