@@ -9,7 +9,7 @@ function App() {
     try {
       setIsLoading(true);
 
-      const URL = process.env.VITE_API_URL ?? "http://localhost:4500";
+      const URL = import.meta.env.VITE_API_URL ?? "http://localhost:4500";
 
       const response = await fetch(`${URL}/api/hello`, {
         credentials: "include",
