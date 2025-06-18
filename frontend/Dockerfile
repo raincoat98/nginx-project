@@ -7,7 +7,7 @@ COPY . .
 
 # ✅ 개발용
 FROM base AS development
-CMD ["npm", "run", "dev", "--", "--host", "--port", "5001"]
+CMD ["npm", "run", "dev", "--", "--host", "--port", "4501"]
 
 # ✅ 빌드용
 FROM base AS build

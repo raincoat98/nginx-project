@@ -37,8 +37,8 @@ docker-compose up
 
 이 명령어는 다음 서비스들을 시작합니다:
 
-- 프론트엔드 (포트: 5001)
-- 백엔드 (포트: 5000)
+- 프론트엔드 (포트: 4501)
+- 백엔드 (포트: 4500)
 - Nginx (포트: 8580)
 
 ### 프로덕션 환경 실행
@@ -51,8 +51,8 @@ docker-compose -f docker-compose.prod.yml up
 
 ## 접근 방법
 
-- 프론트엔드: http://localhost:5001
-- 백엔드 API: http://localhost:5000
+- 프론트엔드: http://localhost:4501
+- 백엔드 API: http://localhost:4500
 - Nginx 프록시: http://localhost:8580
 
 ## 기술 스택

@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       target: production
     ports:
-      - "5000:5000"
+      - "4500:4500"
     networks:
       - prod-network
 
