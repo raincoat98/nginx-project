@@ -150,9 +150,7 @@ jobs:
                 exit 1
               fi
 
-              chmod +x deploy.sh
-              export SYNOLOGY_HOST="$SYNOLOGY_HOST"
-              ./deploy.sh
+              chmod +x deploy.sh && ./deploy.sh
               
               echo "✅ 컨테이너 상태 확인"
               docker-compose -f docker-compose.prod.yml ps || true
