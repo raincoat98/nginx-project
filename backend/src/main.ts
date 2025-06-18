@@ -7,7 +7,12 @@ async function bootstrap() {
 
   // CORS 설정
   app.enableCors({
-    origin: 'http://localhost:5001', // 프론트엔드 주소
+    origin: [
+      'http://localhost:5001',
+      'http://localhost:8580',
+      'http://ww57403.synology.me:5001',
+      'http://ww57403.synology.me:8580',
+    ], // 프론트엔드 주소
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],

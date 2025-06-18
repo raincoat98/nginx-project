@@ -2,6 +2,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
       target: production
     ports:
       - "5000:5000"
@@ -11,6 +12,7 @@ services:
   nginx:
     build:
       context: ./frontend
+      dockerfile: Dockerfile
       target: production
     container_name: nginx-prod
     ports:
