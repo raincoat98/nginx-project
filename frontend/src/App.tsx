@@ -8,7 +8,12 @@ function App() {
   const handleClick = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:4500/api/hello", {
+
+      const URL = process.env.REACT_APP_API_URL
+        ? process.env.REACT_APP_API_URL
+        : "http://localhost:4500";
+
+      const response = await fetch(`${URL}/api/hello`, {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
