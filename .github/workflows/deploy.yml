@@ -131,9 +131,6 @@ jobs:
               systemctl enable docker
               echo "✅ Docker 서비스 실행 완료"
 
-              # 현재 사용자를 docker 그룹에 추가
-              usermod -aG docker $USER
-
               # Docker Compose 설치 확인
               if ! command -v docker-compose &> /dev/null; then
                 echo "🚀 Docker Compose가 설치되지 않았습니다. 설치를 진행합니다."
