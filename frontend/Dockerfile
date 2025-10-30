@@ -5,7 +5,7 @@ WORKDIR /app
 # 의존성 캐시 단계
 COPY package*.json ./
 RUN --mount=type=cache,target=/root/.npm \
-    npm ci --no-audit --omit=optional
+    npm ci --no-audit
 
 # 앱 소스 복사
 COPY . .
