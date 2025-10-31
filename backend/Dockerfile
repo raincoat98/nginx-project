@@ -13,6 +13,7 @@ COPY . .
 
 # ✅ 개발용
 FROM base AS development
+RUN apt-get update && apt-get install -y procps && rm -rf /var/lib/apt/lists/*
 CMD ["npm", "run", "start:dev"]
 
 # ✅ 빌드용
