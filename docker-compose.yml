@@ -3,8 +3,10 @@ services:
     build:
       context: ./frontend
       target: development
+    environment:
+      - VITE_PORT=${VITE_PORT:-4501}
     ports:
-      - "4501:4501"
+      - "${VITE_PORT:-4501}:${VITE_PORT:-4501}"
     volumes:
       - ./frontend:/app
       - /app/node_modules

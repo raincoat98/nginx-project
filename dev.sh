@@ -6,6 +6,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$SCRIPT_DIR"
 COMPOSE_FILE="$PROJECT_ROOT/docker-compose.yml"
 
+# .env.development 파일이 있으면 로드 (frontend 폴더)
+if [[ -f "$PROJECT_ROOT/frontend/.env.development" ]]; then
+  set -a
+  source "$PROJECT_ROOT/frontend/.env.development"
+  set +a
+fi
+
 usage() {
   cat <<'USAGE'
 사용법: ./dev.sh [명령]
@@ -34,10 +41,11 @@ ensure_compose_file() {
 }
 
 print_endpoints() {
+  local frontend_port="${VITE_PORT:-4501}"
   echo ""
   echo "로컬 엔드포인트:"
   echo "- Nginx:     http://localhost:8580"
-  echo "- Frontend:  http://localhost:4501"
+  echo "- Frontend:  http://localhost:${frontend_port}"
   echo "- Backend:   http://localhost:4500"
   echo ""
 }
@@ -46,24 +54,33 @@ cmd=${1:-up}
 
 ensure_compose_file
 
+# docker-compose 명령어에 사용할 env-file 옵션 설정
+# frontend 폴더의 파일이 우선순위가 높음
+ENV_FILE_OPTION=""
+if [[ -f "$PROJECT_ROOT/frontend/.env.development" ]]; then
+  ENV_FILE_OPTION="--env-file $PROJECT_ROOT/frontend/.env.development"
+elif [[ -f "$PROJECT_ROOT/.env.development" ]]; then
+  ENV_FILE_OPTION="--env-file $PROJECT_ROOT/.env.development"
+fi
+
 case "$cmd" in
   up)
-    docker compose -f "$COMPOSE_FILE" up -d --build
+    docker compose -f "$COMPOSE_FILE" $ENV_FILE_OPTION up -d --build
     print_endpoints
     ;;
   down)
-    docker compose -f "$COMPOSE_FILE" down -v
+    docker compose -f "$COMPOSE_FILE" $ENV_FILE_OPTION down -v
     ;;
   logs)
-    docker compose -f "$COMPOSE_FILE" logs -f
+    docker compose -f "$COMPOSE_FILE" $ENV_FILE_OPTION logs -f
     ;;
   ps)
-    docker compose -f "$COMPOSE_FILE" ps
+    docker compose -f "$COMPOSE_FILE" $ENV_FILE_OPTION ps
     ;;
   rebuild)
-    docker compose -f "$COMPOSE_FILE" pull --ignore-buildable || true
-    docker compose -f "$COMPOSE_FILE" build --no-cache
-    docker compose -f "$COMPOSE_FILE" up -d
+    docker compose -f "$COMPOSE_FILE" $ENV_FILE_OPTION pull --ignore-buildable || true
+    docker compose -f "$COMPOSE_FILE" $ENV_FILE_OPTION build --no-cache
+    docker compose -f "$COMPOSE_FILE" $ENV_FILE_OPTION up -d
     print_endpoints
     ;;
   clean)
