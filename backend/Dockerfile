@@ -30,5 +30,5 @@ ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
 COPY --from=base /app/node_modules ./node_modules
 
-EXPOSE 4500
+EXPOSE 5500
 CMD ["node", "dist/main"]

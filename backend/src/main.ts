@@ -7,12 +7,7 @@ async function bootstrap() {
 
   // CORS 설정
   app.enableCors({
-    origin: [
-      'http://localhost:4501',
-      'http://localhost:8580',
-      'http://ww57403.synology.me:4501',
-      'http://ww57403.synology.me:8580',
-    ], // 프론트엔드 주소
+    origin: [process.env.CORS_ORIGINS ?? ''], // 프론트엔드 주소 및 도커 개발환경 주소 추가
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -26,6 +21,6 @@ async function bootstrap() {
     next();
   });
 
-  await app.listen(process.env.PORT ?? 4500);
+  await app.listen(process.env.PORT ?? 5500);
 }
 bootstrap();

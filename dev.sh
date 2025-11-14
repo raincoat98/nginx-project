@@ -37,9 +37,9 @@ ensure_compose_file() {
 print_endpoints() {
   echo ""
   echo "로컬 엔드포인트:"
-  echo "- Nginx:     http://localhost:8580"
-  echo "- Frontend:  http://localhost:4501"
-  echo "- Backend:   http://localhost:4600"
+  echo "- Nginx:     http://localhost:5400"
+  echo "- Frontend:  http://localhost:5401"
+  echo "- Backend:   http://localhost:5501"
   echo ""
 }
 

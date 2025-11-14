@@ -1,0 +1,18 @@
+services:
+  backend-green:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: backend-green
+    ports:
+      - "5502:5500"
+    environment:
+      - PORT=5500
+    networks:
+      - prod-network
+    restart: unless-stopped
+
+networks:
+  prod-network:
+    external: true
