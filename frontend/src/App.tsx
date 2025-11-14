@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
@@ -9,14 +9,21 @@ function App() {
     try {
       setIsLoading(true);
 
-      const URL = import.meta.env.VITE_API_URL ?? "http://localhost:4500";
+      // 현재 URL을 기준으로 API 호출 (Nginx를 통해 프록시)
+      // 브라우저의 현재 호스트를 사용하여 상대 경로로 호출
+      const apiPath = "/api/hello";
 
-      const response = await fetch(`${URL}/api/hello`, {
+      const response = await fetch(apiPath, {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       console.log("서버 응답:", data);
       setMessage(data.message);
@@ -27,6 +34,11 @@ function App() {
       setIsLoading(false);
     }
   };
+
+  // 컴포넌트 마운트 시 자동 호출
+  useEffect(() => {
+    handleClick();
+  }, []);
 
   return (
     <div className="App">

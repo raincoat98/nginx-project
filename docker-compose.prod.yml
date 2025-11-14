@@ -1,13 +1,31 @@
 services:
-  backend:
+  backend-blue:
     build:
       context: ./backend
       dockerfile: Dockerfile
       target: production
+    container_name: backend-blue
     ports:
-      - "4500:4500"
+      - "5501:5500"
+    environment:
+      - PORT=5500
     networks:
       - prod-network
+    restart: unless-stopped
+
+  backend-green:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: backend-green
+    ports:
+      - "5502:5500"
+    environment:
+      - PORT=5500
+    networks:
+      - prod-network
+    restart: unless-stopped
 
   nginx:
     build:
@@ -15,15 +33,17 @@ services:
       dockerfile: Dockerfile
       target: production
     container_name: nginx-prod
+    depends_on:
+      - backend-blue
+      - backend-green
     ports:
-      - "8580:80"
+      - "5400:80"
     volumes:
       - ./nginx/default.prod.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - backend
     networks:
       - prod-network
+    restart: unless-stopped
 
 networks:
   prod-network:
-    driver: bridge
+    external: true
